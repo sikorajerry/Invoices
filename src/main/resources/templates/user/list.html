@@ -1,0 +1,33 @@
+List uzivatele
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+</nav>
+    <table class="table" style="width:100%">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Username</th>
+            <th scope="col">Password</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="user, stat : ${users}">
+                <th scope="row" th:text="${stat.count}" />
+                <td th:text="${user.name}" />
+                <td th:text="${user.vorname}" />
+                <td th:text="${user.username}" />
+                <td th:text="${user.password}" />
+                <td>
+                    <form th:action="@{delete}" method="post">
+                        <input type="hidden" name="id" th:value="${user.id}" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+<a th:href="@{/}">Odkaz na homepage</a>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>

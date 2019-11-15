@@ -1,0 +1,41 @@
+<div class="container">
+    <div th:replace="fragments/header.html :: loggedMenu"></div>
+</div>
+
+<div class="container">
+<a class="btn btn-primary" th:href="@{/invoices/add}" role="button">Pridat Fakturu</a>
+
+<table class="table" style="width:100%">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Created</th>
+        <th scope="col">BuyDate</th>
+        <th scope="col">ProductName</th>
+        <th scope="col">Company</th>
+        <th scope="col">Price</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="invoice, stat : ${invoices}">
+        <th scope="row" th:text="${stat.count}" />
+        <td th:text="${invoice.created}" />
+        <td th:text="${invoice.buyDate}" />
+        <td th:text="${invoice.productName}" />
+        <td th:text="${invoice.company}" />
+        <td th:text="${#numbers.formatCurrency(invoice.price)}" />
+        <td>
+            <form th:action="@{delete}" method="post">
+                <input type="hidden" name="id" th:value="${invoice.id}" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+        </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</div>
+
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
