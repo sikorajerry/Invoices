@@ -1,7 +1,6 @@
 package cz.prague.js.home.invoice.security;
 
 import cz.prague.js.home.invoice.service.UserDetailsServiceImpl;
-import cz.prague.js.home.invoice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder;
 
     @Bean
+    @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
@@ -28,11 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(passwordEncoder)
-//                .withUser("user").password(passwordEncoder.encode("123456")).roles("USER")
-//                .and()
-//                .withUser("admin").password(passwordEncoder.encode("123456")).roles("USER", "ADMIN");
         auth.authenticationProvider(authenticationProvider());
     }
 

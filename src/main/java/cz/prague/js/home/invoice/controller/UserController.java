@@ -19,6 +19,8 @@ import javax.validation.Valid;
 @RequestMapping("/users/")
 public class UserController {
 
+    private static final String ADD_USER = "user/add_user";
+
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
@@ -38,7 +40,7 @@ public class UserController {
     public String addUser(Model model) {
         logger.info("GetMapping add");
         model.addAttribute(new UserDto());
-        return "user/add_user";
+        return ADD_USER;
 
     }
 
@@ -46,14 +48,14 @@ public class UserController {
     public String addUser(@Valid @ModelAttribute UserDto userDto, BindingResult result, Model model) {
         logger.info("PostMapping add");
         if (result.hasErrors()) {
-            return "user/add_user";
+            return ADD_USER;
         }
 
         try {
             userService.save(userDto);
         } catch (Exception e) {
             model.addAttribute("userExist", true);
-            return "user/add_user";
+            return ADD_USER;
 
         }
         return "redirect:list";

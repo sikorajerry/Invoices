@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PdfUserDetails implements UserDetails {
-    private User user;
+    private transient User user;
 
     public PdfUserDetails(User user) {
         this.user = user;

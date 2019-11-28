@@ -5,6 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserContextUtils {
 
+    private UserContextUtils() {
+    }
+
     public static String getLoggedUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

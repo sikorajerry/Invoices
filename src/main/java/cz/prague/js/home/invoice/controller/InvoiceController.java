@@ -3,7 +3,6 @@ package cz.prague.js.home.invoice.controller;
 import cz.prague.js.home.invoice.common.UserContextUtils;
 import cz.prague.js.home.invoice.dto.InvoiceDto;
 import cz.prague.js.home.invoice.model.GoogleExtensionFile;
-import cz.prague.js.home.invoice.service.GoogleDriveStorageServiceImpl;
 import cz.prague.js.home.invoice.service.InvoiceService;
 import cz.prague.js.home.invoice.service.StorageService;
 import org.slf4j.Logger;
@@ -18,9 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -80,7 +77,7 @@ public class InvoiceController {
         GoogleExtensionFile googleExtensionFile = storageService.getFileByName(id);
         byte[] imageBytes = googleExtensionFile.getByteArrayOutputStream().toByteArray();
 
-        logger.info("Stahuji soubor {}" , id);
+        logger.info("Stahuji soubor {}", id);
 
 
         HttpHeaders respHeaders = new HttpHeaders();
@@ -89,8 +86,8 @@ public class InvoiceController {
         respHeaders.setContentDispositionFormData("attachment", googleExtensionFile.getExtensionData().getName());
 
 
-        final ResponseEntity<byte[]> inputStreamResourceResponseEntity = new ResponseEntity<byte[]>(imageBytes, respHeaders, HttpStatus.OK);
-        return inputStreamResourceResponseEntity;
+        return  new ResponseEntity<>(imageBytes, respHeaders, HttpStatus.OK);
+
     }
 
 

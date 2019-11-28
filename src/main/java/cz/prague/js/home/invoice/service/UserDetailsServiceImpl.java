@@ -1,10 +1,9 @@
 package cz.prague.js.home.invoice.service;
 
-import cz.prague.js.home.invoice.security.domain.PdfUserDetails;
 import cz.prague.js.home.invoice.model.User;
 import cz.prague.js.home.invoice.repository.UserRepository;
+import cz.prague.js.home.invoice.security.domain.PdfUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

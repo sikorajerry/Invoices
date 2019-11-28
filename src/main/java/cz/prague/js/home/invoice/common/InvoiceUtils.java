@@ -9,6 +9,9 @@ import java.util.List;
 
 public class InvoiceUtils {
 
+    private InvoiceUtils() {
+    }
+
     public static List<InvoiceDto> convertInvoiceListToInvoiceDtoList(List<Invoice> allInvoices) {
         List<InvoiceDto> output = new ArrayList<>();
 

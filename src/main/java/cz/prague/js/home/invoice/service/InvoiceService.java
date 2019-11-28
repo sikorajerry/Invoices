@@ -6,14 +6,10 @@ import cz.prague.js.home.invoice.dto.InvoiceDto;
 import cz.prague.js.home.invoice.model.Invoice;
 import cz.prague.js.home.invoice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,7 +40,6 @@ public class InvoiceService {
 
     public void save(InvoiceDto invoiceDto) {
 
-        //TODO : hodit to do servisy invoiceService.save(invoiceDto) - ted jen overit zda to takto funguje
         String fileId="";
         try {
             fileId = storageService.store(invoiceDto.getFile());
