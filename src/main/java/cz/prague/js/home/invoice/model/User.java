@@ -13,7 +13,7 @@ import java.util.Set;
 public class User {
     private String id;
     private String name;
-    private String vorname;
+    private String surname;
     @Indexed(unique = true)
     private String username;
     private String password;

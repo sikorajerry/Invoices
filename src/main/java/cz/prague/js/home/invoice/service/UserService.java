@@ -27,11 +27,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void save(UserDto userDto) {
+    public void save(UserDto userDto) throws Exception {
+
+        User userByUsername = userRepository.findUserByUsername(userDto.getUsername());
+        if (userByUsername != null) {
+            throw new Exception("USername exist not possible add another one");
+        }
+
         User user = new User();
         user.setId(userDto.getId());
         user.setName(userDto.getName());
-        user.setVorname(userDto.getVorname());
+        user.setSurname(userDto.getSurname());
         user.setUsername(userDto.getUsername());
         String encodedPassword = new BCryptPasswordEncoder().encode(userDto.getPassword());
         user.setPassword(encodedPassword);
@@ -46,6 +52,8 @@ public class UserService {
 
         logger.info("User save({})", user);
 
+
+
         userRepository.save(user);
     }
 
@@ -56,7 +64,7 @@ public class UserService {
             UserDto userDto = new UserDto();
             userDto.setId(user.getId());
             userDto.setName(user.getName());
-            userDto.setVorname(user.getVorname());
+            userDto.setSurname(user.getSurname());
             userDto.setPassword(user.getPassword());
             userDto.setUsername(user.getUsername());
 

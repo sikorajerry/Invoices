@@ -1,5 +1,6 @@
 package cz.prague.js.home.invoice.service;
 
+import cz.prague.js.home.invoice.common.InvoiceUtils;
 import cz.prague.js.home.invoice.common.UserContextUtils;
 import cz.prague.js.home.invoice.dto.InvoiceDto;
 import cz.prague.js.home.invoice.model.Invoice;
@@ -9,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,55 +20,47 @@ import java.util.List;
 public class InvoiceService {
 
     private InvoiceRepository invoiceRepository;
+    private StorageService storageService;
 
     @Autowired
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, StorageService storageService) {
         this.invoiceRepository = invoiceRepository;
-    }
-
-    public List<InvoiceDto> findAll() {
-        List<Invoice> allInvoices = invoiceRepository.findAll();
-        return getInvoiceDtos(allInvoices);
-    }
-
-    private List<InvoiceDto> getInvoiceDtos(List<Invoice> allInvoices) {
-        List<InvoiceDto> output = new ArrayList<>();
-
-        for (Invoice invoice: allInvoices) {
-            InvoiceDto invoiceDto = new InvoiceDto();
-            invoiceDto.setId(invoice.getId());
-            invoiceDto.setProductName(invoice.getProductName());
-            invoiceDto.setPrice(invoice.getPrice());
-            invoiceDto.setBuyDate(invoice.getBuyDate());
-            invoiceDto.setCompany(invoice.getCompany());
-            invoiceDto.setCreated(invoice.getCreated());
-
-            output.add(invoiceDto);
-        }
-        return output;
-    }
-
-    public void save(InvoiceDto invoiceDto) {
-
-        String loggedUsername = UserContextUtils.getLoggedUsername();
-
-        Invoice invoice = new Invoice();
-        invoice.setBuyDate(invoiceDto.getBuyDate());
-        invoice.setCompany(invoiceDto.getCompany());
-        invoice.setCreated(LocalDate.now());
-        invoice.setPrice(invoiceDto.getPrice());
-        invoice.setProductName(invoiceDto.getProductName());
-        invoice.setUsername(loggedUsername);
-
-        invoiceRepository.save(invoice);
+        this.storageService = storageService;
     }
 
     public void delete(String id) {
         invoiceRepository.deleteById(id);
     }
 
+    public List<InvoiceDto> findAll() {
+        List<Invoice> allInvoices = invoiceRepository.findAll();
+        return InvoiceUtils.convertInvoiceListToInvoiceDtoList(allInvoices);
+    }
+
     public List<InvoiceDto> findByUsername(String loggedUsername) {
         List<Invoice> allInvoices = invoiceRepository.findByUsername(loggedUsername);
-        return getInvoiceDtos(allInvoices);
+        return InvoiceUtils.convertInvoiceListToInvoiceDtoList(allInvoices);
     }
+
+    public void save(InvoiceDto invoiceDto) {
+
+        //TODO : hodit to do servisy invoiceService.save(invoiceDto) - ted jen overit zda to takto funguje
+        String fileId="";
+        try {
+            fileId = storageService.store(invoiceDto.getFile());
+        } catch (IOException | GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        invoiceDto.setFileId(fileId);
+
+
+        Invoice invoice = InvoiceUtils.convertInvoiceDtoTOInvoice(invoiceDto);
+        invoice.setUsername(UserContextUtils.getLoggedUsername());
+
+        invoiceRepository.save(invoice);
+    }
+
+
+
+
 }

@@ -4,6 +4,7 @@ import cz.prague.js.home.invoice.security.domain.PdfUserDetails;
 import cz.prague.js.home.invoice.model.User;
 import cz.prague.js.home.invoice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +18,10 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userByUsername = userRepository.findUserByUsername(username);
-
-        return new PdfUserDetails(userByUsername);
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User with username:"+username+" not found");
+        }
+        return new PdfUserDetails(user);
     }
 }

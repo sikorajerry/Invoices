@@ -17,24 +17,7 @@
 </head>
 <body>
 <div>
-    <!-- ============================================================================ -->
-    <!-- This content is only used for static prototyping purposes (natural templates)-->
-    <!-- and is therefore entirely optional, as this markup fragment will be included -->
-    <!-- from "fragments/header.html" at runtime.                                     -->
-    <!-- ============================================================================ -->
-
-        <div class="container">
-            <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    <div th:replace="fragments/header.html :: notLoggedMenu"></div>
 
 <div class="container">
         <h1>Invoice application</h1>
@@ -46,7 +29,7 @@
         </p>
         <p>
             <a href="/signup" th:href="@{/signup}" class="btn btn-large btn-success">Sign up</a>
-            <a th:href="@{/users/add}" class="btn btn-large btn-success">Register</a>
+            <a th:href="@{/users/add}" class="btn btn-light">Register</a>
         </p>
     <!--    <div th:replace="fragments/footer :: footer">&copy; 2016 The Static Templates</div>-->
 </div>

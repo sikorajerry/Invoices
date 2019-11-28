@@ -47,16 +47,34 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.webjars</groupId>-->
+<!--			<artifactId>bootstrap</artifactId>-->
+<!--			<version>4.0.0-2</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.webjars</groupId>-->
+<!--			<artifactId>webjars-locator</artifactId>-->
+<!--			<version>0.30</version>-->
+<!--		</dependency>-->
+
+		<!-- Dependencies on google api drive , load and save files on remote disk -->
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>4.0.0-2</version>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.23.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>webjars-locator</artifactId>
-			<version>0.30</version>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.23.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>v3-rev188-1.25.0</version>
+		</dependency>
+		<!-- Dependencies on google api drive , load and save files on remote disk -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

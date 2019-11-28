@@ -19,48 +19,61 @@
                 <div class="col-sm-8">
 
                     <h4 class="page-header">Default Implementation</h4>
-                    <form role="form" method="post" th:object="${invoiceDto}" th:action="@{/invoices/add}">
-                        <div class="form-group float-label-control">
-                            <label class="lead" for="">Buy date</label>
-                            <input type="date" class="form-control"  th:field="*{buyDate}" placeholder="BuyDate"/>
-                        </div>
-                        <div class="form-group float-label-control">
-                            <label for="">Product </label>
-                            <input type="text" class="form-control" th:field="*{productName}" placeholder="ProductName" />
-                        </div>
-                        <div class="form-group float-label-control">
-                            <label for="">Company where you buy </label>
-                            <input type="text" class="form-control" th:field="*{company}" placeholder="Company" />
-                        </div>
-                        <div class="form-group float-label-control">
-                            <label for="">Price of product </label>
-                            <input type="text" class="form-control" th:field="*{price}" placeholder="Price" />
-                        </div>
-    <!--                    <div class="form-group float-label-control">-->
-    <!--                        <label for="">Textarea</label>-->
-    <!--                        <textarea class="form-control" placeholder="Textarea" rows="1"></textarea>-->
-    <!--                    </div>-->
-                        <button type="submit" class="btn btn-large btn-success" >Save</button>
+                    <form role="form" method="post" enctype="multipart/form-data" th:object="${invoiceDto}" th:action="@{/invoices/add}">
 
+<!--                        <div class='input-group date' id='datetimepicker1'>-->
+<!--                            <input type='text' class="form-control" th:field="*{buyDate}" />-->
+<!--                            <span class="input-group-addon">-->
+<!--                        <span class="glyphicon glyphicon-calendar"></span>-->
+<!--                    </span>-->
+<!--                        </div>-->
+
+<!--                        <div class="input-group date" data-provide="datepicker">-->
+<!--                            <input type="text" class="form-control">-->
+<!--                            <div class="input-group-addon">-->
+<!--                                <span class="glyphicon glyphicon-th"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+
+                        <div class="form-group float-label-control">
+                            <label for="buyDate">Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar">
+                                        </i>
+                                    </div>
+                                    <input class="form-control"  th:field="*{buyDate}" autocomplete="off"  placeholder="MM/DD/YYYY" type="text"/>
+                                </div>
+                            <small class="text-muted" th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}">Date Error</small>
+                        </div>
+
+                        <div class="form-group float-label-control">
+                            <label for="productName">Product </label>
+                            <input type="text" class="form-control" th:field="*{productName}" placeholder="ProductName" />
+                            <small class="text-muted" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">Date Error</small>
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label for="company">Company where you buy </label>
+                            <input type="text" class="form-control" th:field="*{company}" placeholder="Company" />
+                            <small class="text-muted" th:if="${#fields.hasErrors('company')}" th:errors="*{company}">Date Error</small>
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label for="price">Price of product </label>
+                            <input type="text" class="form-control" th:field="*{price}" placeholder="Price" />
+                            <small class="text-muted" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Date Error</small>
+                        </div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <div class="file-field">
+                            <div class="btn btn-primary btn-sm float-left">
+                                <span>Choose file</span>
+                                <input type="file" name="file">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-large btn-success" >Save</button>
                     </form>
 
-
-    <!--                <h4 class="page-header">Bottom Labels</h4>-->
-    <!--                <form role="form">-->
-    <!--                    <div class="form-group float-label-control label-bottom">-->
-    <!--                        <label for="">Username</label>-->
-    <!--                        <input type="email" class="form-control" placeholder="Username">-->
-    <!--                    </div>-->
-    <!--                </form>-->
-
-
-    <!--                <h4 class="page-header">Placeholder Overrides</h4>-->
-    <!--                <form role="form">-->
-    <!--                    <div class="form-group float-label-control">-->
-    <!--                        <label for="">Email Address</label>-->
-    <!--                        <input type="email" class="form-control" placeholder="What's your email address?">-->
-    <!--                    </div>-->
-    <!--                </form>-->
 
                 </div>
                 <div class="col-sm-4">
@@ -87,11 +100,26 @@
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    document.getElementById('buyDate').value = new Date().toISOString().substring(0, 10);
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var date_input=$('input[name="buyDate"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var options={
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        };
+        date_input.datepicker(options);
+    })
+
+
+    $('#i_file').change( function(event) {
+        var tmppath = URL.createObjectURL(event.target.files[0]);
+        $("img").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+
+        $("#disp_tmp_path").html("Temporary Path(Copy it and try pasting it in browser address bar) --> <strong>["+tmppath+"]</strong>");
+    });
 </script>
 

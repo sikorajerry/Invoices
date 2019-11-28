@@ -14,4 +14,6 @@ public class Invoice {
     private String company;
     private BigDecimal price;
     private String username;
+    private String fileName;
+    private String fileId;
 }
