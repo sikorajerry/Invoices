@@ -1,105 +1,92 @@
-<div class="container">
-    <div th:replace="fragments/header.html :: loggedMenu"></div>
-    <div>
-        <div>
-            <h2>Float Label Pattern Forms</h2>
-            <p class="lead">
-                This new pattern transforms Bootstrap's form fields into modern, fun and user-friendly experiences!<br />
-                <small class="text-muted">Learn more about this pattern at <a href="http://bradfrostweb.com/blog/post/float-label-pattern/" target="blank">http://bradfrostweb.com/blog/post/float-label-pattern/</a></small>
-            </p>
+<div th:fragment="main">
 
-            <div class="alert alert-warning">
-                <h4>Missing SELECT Support</h4>
-                This feature does not currently support SELECT tags - I'm still working out a way to make them work with Bootstrap's native examples.
-            </div>
+    <div th:replace="navigate/nav.html"></div>
 
-            <hr />
-
-            <div class="row">
-                <div class="col-sm-8">
-
-                    <h4 class="page-header">Default Implementation</h4>
-                    <form role="form" method="post" enctype="multipart/form-data" th:object="${invoiceDto}" th:action="@{/invoices/add}">
-
-<!--                        <div class='input-group date' id='datetimepicker1'>-->
-<!--                            <input type='text' class="form-control" th:field="*{buyDate}" />-->
-<!--                            <span class="input-group-addon">-->
-<!--                        <span class="glyphicon glyphicon-calendar"></span>-->
-<!--                    </span>-->
-<!--                        </div>-->
-
-<!--                        <div class="input-group date" data-provide="datepicker">-->
-<!--                            <input type="text" class="form-control">-->
-<!--                            <div class="input-group-addon">-->
-<!--                                <span class="glyphicon glyphicon-th"></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-
-                        <div class="form-group float-label-control">
-                            <label for="buyDate">Date</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar">
-                                        </i>
-                                    </div>
-                                    <input class="form-control"  th:field="*{buyDate}" autocomplete="off"  placeholder="MM/DD/YYYY" type="text"/>
-                                </div>
-                            <small class="text-muted" th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}">Date Error</small>
-                        </div>
-
-                        <div class="form-group float-label-control">
-                            <label for="productName">Product </label>
-                            <input type="text" class="form-control" th:field="*{productName}" placeholder="ProductName" />
-                            <small class="text-muted" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">Date Error</small>
-                        </div>
-                        <div class="form-group float-label-control">
-                            <label for="company">Company where you buy </label>
-                            <input type="text" class="form-control" th:field="*{company}" placeholder="Company" />
-                            <small class="text-muted" th:if="${#fields.hasErrors('company')}" th:errors="*{company}">Date Error</small>
-                        </div>
-                        <div class="form-group float-label-control">
-                            <label for="price">Price of product </label>
-                            <input type="text" class="form-control" th:field="*{price}" placeholder="Price" />
-                            <small class="text-muted" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Date Error</small>
-                        </div>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-                        <div class="file-field">
-                            <div class="btn btn-primary btn-sm float-left">
-                                <span>Choose file</span>
-                                <input type="file" name="file">
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-large btn-success" >Save</button>
-                    </form>
-
-
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                Features
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <ul>
-                                <li>Very customizable</li>
-                                <li>Works with Bootstrap's native form examples</li>
-                                <li>Uses CSS transitions for fallback browser support</li>
-                                <li>Placeholder override for labels when fields are empty</li>
-                                <li>Included authored jQuery plugin</li>
-                                <li>Optional bottom label positioning with the <code>.label-bottom</code> utility</li>
-                                <li>Works great with Chrome's AutoComplete</li>
-                            </ul>
-                        </div>
+    <div class="content-wrapper" style="min-height: 1909.81px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>DataTables</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Invoice</a></li>
+                            <li class="breadcrumb-item active">Add</li>
+                        </ol>
                     </div>
                 </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <!-- left column -->
+                        <div class="col-md-6">
+                            <h4 class="page-header">Default Implementation</h4>
+                            <form role="form" method="post" enctype="multipart/form-data" th:object="${invoiceDto}"
+                                  th:action="@{/invoices/add}">
+
+                                <div class="form-group float-label-control">
+                                    <label for="buyDate">Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar">
+                                            </i>
+                                        </div>
+                                        <input class="form-control" th:field="*{buyDate}" autocomplete="off"
+                                               placeholder="MM/DD/YYYY" type="text"/>
+                                    </div>
+                                    <small class="text-muted" th:if="${#fields.hasErrors('buyDate')}"
+                                           th:errors="*{buyDate}">Date Error</small>
+                                </div>
+
+                                <div class="form-group float-label-control">
+                                    <label for="productName">Product </label>
+                                    <input type="text" class="form-control" th:field="*{productName}"
+                                           placeholder="ProductName"/>
+                                    <small class="text-muted" th:if="${#fields.hasErrors('productName')}"
+                                           th:errors="*{productName}">Date Error</small>
+                                </div>
+                                <div class="form-group float-label-control">
+                                    <label for="company">Company where you buy </label>
+                                    <input type="text" class="form-control" th:field="*{company}"
+                                           placeholder="Company"/>
+                                    <small class="text-muted" th:if="${#fields.hasErrors('company')}"
+                                           th:errors="*{company}">Date Error</small>
+                                </div>
+                                <div class="form-group float-label-control">
+                                    <label for="price">Price of product </label>
+                                    <input type="text" class="form-control" th:field="*{price}" placeholder="Price"/>
+                                    <small class="text-muted" th:if="${#fields.hasErrors('price')}"
+                                           th:errors="*{price}">Date
+                                        Error</small>
+                                </div>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                                <div class="file-field">
+                                    <div class="btn btn-primary btn-sm float-left">
+                                        <span>Choose file</span>
+                                        <input type="file" name="file">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-large btn-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- right column -->
+                    <div class="col-md-6"></div>
+                </div>
             </div>
+            <!--/* end row */-->
         </div>
     </div>
-</div>
+
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -123,3 +110,4 @@
     });
 </script>
 
+</div>

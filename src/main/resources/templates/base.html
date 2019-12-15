@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Base</title>
+        <meta name="description" content=""/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <div th:replace="fragments/common.html :: css"></div>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="content">
+                <div th:replace="${template}" />
+            </div>
+        </div>
+        <div th:replace="fragments/common.html :: script"></div>
+    </body>
+</html>

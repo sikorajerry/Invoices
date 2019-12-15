@@ -1,42 +1,127 @@
-<div th:fragment="tableInvoice">
-<!-- Card -->
-<div class="card">
-    <!-- Card body -->
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Created</th>
-            <th scope="col">BuyDate</th>
-            <th scope="col">ProductName</th>
-            <th scope="col">Company</th>
-            <th scope="col">Price</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <th:block th:each="invoice, stat : ${invoices}">
-            <th scope="row" th:text="${stat.count}" />
-            <td th:text="${invoice.created}" />
-            <td th:text="${invoice.buyDate}" />
-            <td th:text="${invoice.productName}" />
-            <td th:text="${invoice.company}" />
-            <td th:text="${#numbers.formatCurrency(invoice.price)}" />
-            <td>
-                <form th:action="@{delete}" method="post">
-                    <input type="hidden" name="id" th:value="${invoice.id}" />
-                    <button type="submit" value="Delete" class="btn btn-success" ><i class="fa fa-trash"></i>&nbsp;Delete </button>
-                </form>
-            </td>
-            <td th:if="${not #strings.isEmpty(invoice.fileName)}">
-                <a th:href="@{'download/' + ${invoice.fileId}}" class="btn btn-success"> <i class="fa fa-download"></i>&nbsp;Download</a>
-            </td>
+<div th:fragment="main">
 
+    <div class="col-sm-12">
+        <table id="table1" class="table table-bordered table-hover dataTable" role="grid"
+               aria-describedby="example2_info">
+            <thead>
+            <tr role="row">
+                <th class="sorting_asc" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Created
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-label="Browser: activate to sort column ascending">BuyDate
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-label="Platform(s): activate to sort column ascending">ProductName(s)
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-label="Engine version: activate to sort column ascending">Company
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-label="CSS grade: activate to sort column ascending">Price
+                </th>
+                <th class="sorting" tabindex="0" aria-controls="table1" rowspan="1" colspan="1"
+                    aria-label="CSS grade: activate to sort column ascending">Actions
+                </th>
             </tr>
-        </th:block>
-        </tbody>
-    </table>
-    <!-- Card body -->
+            </thead>
+            <tbody>
+            <th:block th:each="invoice, stat : ${invoices}">
+                <!--        <th scope="row" th:text="${stat.count}" />-->
+                <tr role="row" class="odd">
+                    <td th:text="${invoice.created}"/>
+                    <td th:text="${invoice.buyDate}"/>
+                    <td th:text="${invoice.productName}"/>
+                    <td th:text="${invoice.company}"/>
+                    <td th:text="${#numbers.formatCurrency(invoice.price)}"/>
+                    <td>
+                        <form th:action="@{delete}" method="post">
+                            <input type="hidden" name="id" th:value="${invoice.id}"/>
+                            <button type="submit" value="Delete" class="btn btn-success"><i class="fa fa-trash"></i>&nbsp;Delete
+                            </button>
+                        </form>
+                    </td>
+                    <td th:if="${not #strings.isEmpty(invoice.fileName)}">
+                        <a th:href="@{'download/' + ${invoice.fileId}}" class="btn btn-success"> <i
+                                class="fa fa-download"></i>&nbsp;Download</a>
+                    </td>
+
+                </tr>
+            </th:block>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th rowspan="1" colspan="1">Created</th>
+                <th rowspan="1" colspan="1">BuyDate</th>
+                <th rowspan="1" colspan="1">ProductName(s)</th>
+                <th rowspan="1" colspan="1">Company</th>
+                <th rowspan="1" colspan="1">Price</th>
+                <th rowspan="1" colspan="1">Actions</th>
+            </tr>
+            </tfoot>
+        </table>
 </div>
-<!-- Card -->
+
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+        </div>
+        <div class="col-sm-12 col-md-7">
+            <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                <ul class="pagination">
+                    <li class="paginate_button page-item previous disabled" id="example2_previous">
+                        <a href="#" aria-controls="table1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                    </li>
+                    <li class="paginate_button page-item active">
+                        <a href="#" aria-controls="table1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                    <li class="paginate_button page-item ">
+                        <a href="#" aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+                    <li class="paginate_button page-item ">
+                        <a href="#" aria-controls="table1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+                    <li class="paginate_button page-item ">
+                        <a href="#" aria-controls="table1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+                    <li class="paginate_button page-item ">
+                        <a href="#" aria-controls="table1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+                    <li class="paginate_button page-item ">
+                        <a href="#" aria-controls="table1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
+                    <li class="paginate_button page-item next" id="example2_next">
+                        <a href="#" aria-controls="table1" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.0.2-pre
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <script>
+        $(document).ready(function() {
+            $('#table1').DataTable( {
+                "columnDefs": [
+                    {
+                        // The `data` parameter refers to the data for the cell (defined by the
+                        // `data` option, which defaults to the column being worked with, in
+                        // this case `data: 0`.
+                        "render": function ( data, type, row ) {
+                            return data +' ('+ row[3]+')';
+                        },
+                        "targets": 0
+                    },
+                    { "visible": false,  "targets": [ 3 ] }
+                ]
+            } );
+        } );
+    </script>
+
 </div>

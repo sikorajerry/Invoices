@@ -1,10 +1,13 @@
 package cz.prague.js.home.invoice.controller;
 
+import cz.prague.js.home.invoice.common.ControllerHelperEnum;
 import cz.prague.js.home.invoice.common.UserContextUtils;
 import cz.prague.js.home.invoice.dto.InvoiceDto;
 import cz.prague.js.home.invoice.model.GoogleExtensionFile;
+import cz.prague.js.home.invoice.model.User;
 import cz.prague.js.home.invoice.service.InvoiceService;
 import cz.prague.js.home.invoice.service.StorageService;
+import cz.prague.js.home.invoice.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,38 +25,44 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 @Controller
-@RequestMapping("/invoices/")
+@RequestMapping("/")
 public class InvoiceController {
+    private static final String INVOICE_PAGE_TEMPLATE = "invoices/list";
 
     Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
     private InvoiceService invoiceService;
     private StorageService storageService;
+    private UserService userService;
 
     @Autowired
-    public InvoiceController(InvoiceService invoiceService, StorageService storageService) {
+    public InvoiceController(InvoiceService invoiceService, StorageService storageService, UserService userService) {
         this.invoiceService = invoiceService;
         this.storageService = storageService;
+        this.userService = userService;
     }
 
-    @GetMapping("list")
+    @GetMapping("allIvnoicesAllUsers")
     public String list(Model model) {
         model.addAttribute("invoices", invoiceService.findAll());
         return "invoices/list";
     }
 
-    @GetMapping("userlist")
-    public String userlist(Model model) {
-        String loggedUsername = UserContextUtils.getLoggedUsername();
+    @GetMapping("userIvoices")
+    public String userlist(Model model) throws Exception {
 
-        model.addAttribute("invoices", invoiceService.findByUsername(loggedUsername));
-        return "invoices/list";
+        model.addAttribute("invoices", invoiceService.findByUsername(UserContextUtils.getLoggedUsername()));
+        model.addAttribute(ControllerHelperEnum.TEMPLATE.getName(), INVOICE_PAGE_TEMPLATE);
+        model.addAttribute("userfullname", getUserFullName());
+        return ControllerHelperEnum.BASE_PAGE.getName();
     }
 
-    @GetMapping("add")
-    public String addUser(Model model) {
+    @GetMapping("insertInvoice")
+    public String insertInvoice(Model model) throws Exception {
         model.addAttribute(new InvoiceDto());
-        return "invoices/add";
+        model.addAttribute("userfullname", getUserFullName());
+        model.addAttribute(ControllerHelperEnum.TEMPLATE.getName(), "invoices/add");
+        return  ControllerHelperEnum.BASE_PAGE.getName();
     }
 
     @PostMapping("add")
@@ -88,6 +97,13 @@ public class InvoiceController {
 
         return  new ResponseEntity<>(imageBytes, respHeaders, HttpStatus.OK);
 
+    }
+
+    private String getUserFullName() throws Exception {
+        String loggedUsername = UserContextUtils.getLoggedUsername();
+        User userByUsername = userService.findUserByUsername(loggedUsername);
+
+        return userByUsername.getName()+" "+userByUsername.getSurname();
     }
 
 

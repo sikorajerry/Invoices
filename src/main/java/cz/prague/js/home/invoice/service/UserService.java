@@ -57,6 +57,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User findUserByUsername(String username) throws Exception {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new Exception("USername exist not possible add another one");
+        }
+        return user;
+    }
+
     public List<UserDto> findAll() {
         List<User> all = userRepository.findAll();
         List<UserDto> output = new ArrayList<>();

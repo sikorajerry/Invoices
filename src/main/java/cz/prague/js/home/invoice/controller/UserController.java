@@ -1,5 +1,6 @@
 package cz.prague.js.home.invoice.controller;
 
+import cz.prague.js.home.invoice.common.ControllerHelperEnum;
 import cz.prague.js.home.invoice.dto.UserDto;
 import cz.prague.js.home.invoice.service.UserService;
 import org.slf4j.Logger;
@@ -8,71 +9,61 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/users/")
+@RequestMapping("/")
 public class UserController {
+    private static final String REGISTER_USER_HTML = "user/register";
+    private static final String INVOICE_LIST_HTML = "invoices/list";
 
-    private static final String ADD_USER = "user/add_user";
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
-
-    @Autowired
     private UserService userService;
 
-
-
-    @GetMapping("home")
-    public String welcomeHome() {
-        logger.info("GetMapping home");
-        return "redirect:index";
-
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("add")
+    @GetMapping("registerUser")
     public String addUser(Model model) {
-        logger.info("GetMapping add");
         model.addAttribute(new UserDto());
-        return ADD_USER;
-
+        model.addAttribute(ControllerHelperEnum.TEMPLATE.getName() , REGISTER_USER_HTML);
+        return ControllerHelperEnum.BASE_PAGE.getName();
     }
 
-    @PostMapping("add")
+    @PostMapping("saveUser")
     public String addUser(@Valid @ModelAttribute UserDto userDto, BindingResult result, Model model) {
-        logger.info("PostMapping add");
-        if (result.hasErrors()) {
-            return ADD_USER;
-        }
 
+        //zde zachytavam chyby z BindingResult a vracim zpet na registracni formular
+        if (result.hasErrors()) {
+            model.addAttribute(ControllerHelperEnum.TEMPLATE.getName(), REGISTER_USER_HTML);
+            return ControllerHelperEnum.BASE_PAGE.getName();
+        }
         try {
             userService.save(userDto);
         } catch (Exception e) {
-            model.addAttribute("userExist", true);
-            return ADD_USER;
+            //Vyhazuji exception kdyz uzivatel existuje , proto nastavuji chybu userExist
+            // a vracim zpet registracni formular
 
+            model.addAttribute("userExist", true);
+            model.addAttribute(ControllerHelperEnum.TEMPLATE.getName(), REGISTER_USER_HTML);
+            return ControllerHelperEnum.BASE_PAGE.getName();
         }
-        return "redirect:list";
+        model.addAttribute(ControllerHelperEnum.TEMPLATE.getName(), INVOICE_LIST_HTML);
+        return ControllerHelperEnum.BASE_PAGE.getName();
     }
 
-    @PostMapping("delete")
-    public String handleDeleteUser(String id) {
-        logger.info("PostMapping delete");
+    @DeleteMapping("deleteUser")
+    public String deleteUser(String id) {
         userService.delete(id);
         return "redirect:list";
     }
 
-    @GetMapping("list")
+    @GetMapping("listAllUsers")
     public String list(Model model) {
-        logger.info("GetMapping list");
         model.addAttribute("users", userService.findAll());
         return "user/list";
     }
-
 }

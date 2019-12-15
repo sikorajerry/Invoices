@@ -48,18 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                .antMatchers("/login")
-                .permitAll()
-                .antMatchers("users/add")
-                .permitAll()
-                .antMatchers("/users/list")
-                .hasAnyRole("ADMIN")
-                .antMatchers("/invoices/**")
-                .hasAnyRole("ADMIN", "USER")
+                .antMatchers("/login").permitAll()
+                .antMatchers("users/add").permitAll()
+                .antMatchers("/users/list").hasAnyRole("ADMIN")
+                .antMatchers("/invoices/**").hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/invoices/userlist").failureUrl("/login-error");
+                .defaultSuccessUrl("/userIvoices").failureUrl("/login-error");
 
     }
 }
